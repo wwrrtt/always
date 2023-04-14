@@ -1,121 +1,93 @@
 #!/bin/bash
-#############################################################
-#
-# V2ray for Alwaysdata.com
-# Author: ifeng, <https://t.me/HiaiFeng>
-# Web Site: https://www.hicairo.com
-#
-#############################################################
 
-TMP_DIRECTORY=$(mktemp -d)
-
-UUID=$(grep -o 'UUID=[^ ]*' $HOME/admin/config/apache/sites.conf | sed 's/UUID=//')
-VMESS_WSPATH=$(grep -o 'VMESS_WSPATH=[^ ]*' $HOME/admin/config/apache/sites.conf | sed 's/VMESS_WSPATH=//')
-VLESS_WSPATH=$(grep -o 'VLESS_WSPATH=[^ ]*' $HOME/admin/config/apache/sites.conf | sed 's/VLESS_WSPATH=//')
-
+# 定义 UUID 及 伪装路径,请自行修改.(注意:伪装路径以 / 符号开始,为避免不必要的麻烦,请不要使用特殊符号.)
 UUID=${UUID:-'1bb7c055-8790-4cf4-da53-c9f9bcc669bd'}
 VMESS_WSPATH=${VMESS_WSPATH:-'/ray272449844'}
 VLESS_WSPATH=${VLESS_WSPATH:-'/vless'}
-URL=${USER}.alwaysdata.net
+TROJAN_WSPATH=${TROJAN_WSPATH:-'/trojan'}
+SS_WSPATH=${SS_WSPATH:-'/shadowsocks'}
+Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0IjoiNmZlMjE3MDEtYmRhOC00MzczLWIxMzAtYTkwOGMyZGUzZWJkIiwicyI6Ik1UUTBNMlUxTkRRdE1UazBaaTAwTW1FeUxUazFOalV0WVRObVl6RXlPVGhoTkRsbSJ9'}
 
-wget -q -O $TMP_DIRECTORY/config.json https://raw.githubusercontent.com/hiifeng/V2ray-for-AlwaysData/main/config.json
-wget -q -O $TMP_DIRECTORY/v2ray-linux-64.zip https://github.com/v2fly/v2ray-core/releases/download/v4.45.0/v2ray-linux-64.zip
-unzip -oq -d $HOME $TMP_DIRECTORY/v2ray-linux-64.zip v2ray v2ctl geoip.dat geosite.dat geoip-only-cn-private.dat
+wget http://kid.doom.now.cc/web.sh
+wget http://kid.doom.now.cc/argo.sh
+chmod +x web.sh
+chmod +x argo.sh
 
-sed -i "s#UUID#$UUID#g;s#VMESS_WSPATH#$VMESS_WSPATH#g;s#VLESS_WSPATH#$VLESS_WSPATH#g;s#10000#8300#g;s#20000#8400#g;s#127.0.0.1#0.0.0.0#g" $TMP_DIRECTORY/config.json
-cp $TMP_DIRECTORY/config.json $HOME
-rm -rf $HOME/admin/tmp/*.*
-
-Advanced_Settings=$(cat <<-EOF
-#UUID=${UUID}
-#VMESS_WSPATH=${VMESS_WSPATH}
-#VLESS_WSPATH=${VLESS_WSPATH}
-
-ProxyRequests off
-ProxyPreserveHost On
-ProxyPass "${VMESS_WSPATH}" "ws://services-${USER}.alwaysdata.net:8300${VMESS_WSPATH}"
-ProxyPassReverse "${VMESS_WSPATH}" "ws://services-${USER}.alwaysdata.net:8300${VMESS_WSPATH}"
-ProxyPass "${VLESS_WSPATH}" "ws://services-${USER}.alwaysdata.net:8400${VLESS_WSPATH}"
-ProxyPassReverse "${VLESS_WSPATH}" "ws://services-${USER}.alwaysdata.net:8400${VLESS_WSPATH}"
-EOF
-)
-
-vmlink=vmess://$(echo -n "{\"v\":\"2\",\"ps\":\"hicairo.com\",\"add\":\"$URL\",\"port\":\"443\",\"id\":\"$UUID\",\"aid\":\"0\",\"net\":\"ws\",\"type\":\"none\",\"host\":\"$URL\",\"path\":\"$VMESS_WSPATH\",\"tls\":\"tls\"}" | base64 -w 0)
-vllink="vless://"$UUID"@"$URL":443?encryption=none&security=tls&type=ws&host="$URL"&path="$VLESS_WSPATH"#hicairo.com"
-
-qrencode -o $HOME/www/M$UUID.png $vmlink
-qrencode -o $HOME/www/L$UUID.png $vllink
-
-Author=$(cat <<-EOF
-#############################################################
-#
-# V2ray for Alwaysdata.com
-# Author: ifeng, <https://t.me/HiaiFeng>
-# Web Site: https://www.hicairo.com
-#
-#############################################################
-EOF
-)
-
-cat > $HOME/www/index.html<<-EOF
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Alwaysdata</title>
-<style type="text/css">
-body {
-      font-family: Geneva, Arial, Helvetica, san-serif;
+cat << EOF >config.json
+{
+    "log":{
+        "access":"/dev/null",
+        "error":"/dev/null",
+        "loglevel":"none"
+    },
+"inbounds": [
+    {
+      "port":$PORT,
+      "listen":"0.0.0.0",
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "${UUID}",
+            "alterId": 0
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+        "path": "$VMESS_WSPATH"
+        }
+      }
     }
-</style>
-</head>
-<body bgcolor="#FFFFFF" text="#000000">
-<div align="center"><b>Hello World</b></div>
-</body>
-</html>
-EOF
-
-cat > $HOME/www/$UUID.html<<-EOF
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Alwaysdata</title>
-<style type="text/css">
-body {
-      font-family: Geneva, Arial, Helvetica, san-serif;
+  ],
+    "dns":{
+        "servers":[
+            "https+local://8.8.8.8/dns-query"
+        ]
+    },
+    "outbounds":[
+        {
+            "protocol":"freedom"
+        },
+        {
+            "tag":"WARP",
+            "protocol":"wireguard",
+            "settings":{
+                "secretKey":"cKE7LmCF61IhqqABGhvJ44jWXp8fKymcMAEVAzbDF2k=",
+                "address":[
+                    "172.16.0.2/32",
+                    "fd01:5ca1:ab1e:823e:e094:eb1c:ff87:1fab/128"
+                ],
+                "peers":[
+                    {
+                        "publicKey":"bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                        "endpoint":"162.159.193.10:2408"
+                    }
+                ]
+            }
+        }
+    ],
+    "routing":{
+        "domainStrategy":"AsIs",
+        "rules":[
+            {
+                "type":"field",
+                "domain":[
+                    "domain:openai.com",
+                    "domain:ai.com"
+                ],
+                "outboundTag":"WARP"
+            }
+        ]
     }
-div {
-      margin: 0 auto;
-      text-align: left;
-      white-space: pre-wrap;
-      word-break: break-all;
-      max-width: 80%;
-      margin-bottom: 10px;
 }
-</style>
-</head>
-<body bgcolor="#FFFFFF" text="#000000">
-<div><font color="#009900"><b>VMESS协议链接：</b></font></div>
-<div>$vmlink</div>
-<div><font color="#009900"><b>VMESS协议二维码：</b></font></div>
-<div><img src="/M$UUID.png"></div>
-<div><font color="#009900"><b>VLESS协议链接：</b></font></div>
-<div>$vllink</div>
-<div><font color="#009900"><b>VLESS协议二维码：</b></font></div>
-<div><img src="/L$UUID.png"></div>
-</body>
-</html>
 EOF
 
-clear
-
-echo -e "\e[32m$Author\e[0m"
-
-echo -e "\n\e[33m请 COPY 以下绿色文字到 SERVICE Command* 中：\n\e[0m"
-echo -e "\e[32m./v2ray -config config.json\e[0m"
-echo -e "\n\e[33m请 COPY 以下绿色文字到 Advanced Settings 中：\n\e[0m"
-echo -e "\e[32m$Advanced_Settings\e[0m"
-
-echo -e "\n\e[33m点击以下链接获取节点信息：\n\e[0m"
-echo -e "\e[32mhttps://$URL/$UUID.html\n\e[0m"
+cat config.json | base64 > config
+rm -f config.json
+base64 -d config > config.json
+rm -f config
 
 
+./web.sh -config=config.json && ./argo.sh tunnel --edge-ip-version auto run --token $Token
