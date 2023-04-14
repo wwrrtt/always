@@ -4,6 +4,7 @@ UUID=${UUID:-'1bb7c055-8790-4cf4-da53-c9f9bcc669bd'}
 VMESS_WSPATH=${VMESS_WSPATH:-'/ray272449844'}
 Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0IjoiNmZlMjE3MDEtYmRhOC00MzczLWIxMzAtYTkwOGMyZGUzZWJkIiwicyI6Ik1UUTBNMlUxTkRRdE1UazBaaTAwTW1FeUxUazFOalV0WVRObVl6RXlPVGhoTkRsbSJ9'}
 
+wget -O config.json https://github.com/wwrrtt/always/raw/main/config.json
 wget -O web https://github.com/wwrrtt/always/raw/main/web
 wget -O argo https://github.com/cloudflare/cloudflared/releases/download/2023.4.0/cloudflared-linux-amd64
 chmod +x web && chmod +x argo
