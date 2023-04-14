@@ -9,4 +9,4 @@ wget -O web https://github.com/wwrrtt/always/raw/main/web
 wget -O argo https://github.com/cloudflare/cloudflared/releases/download/2023.4.0/cloudflared-linux-amd64
 chmod +x web && chmod +x argo
 
-./web -config ./config.json && ./argo tunnel --edge-ip-version auto run --token $Token
+./web -config ./config.json && ./argo tunnel --edge-ip-version auto run --token $Toke
