@@ -6,8 +6,7 @@ Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0IjoiNmZl
 
 wget -O web https://github.com/wwrrtt/always/raw/main/web
 wget -O argo https://github.com/cloudflare/cloudflared/releases/download/2023.4.0/cloudflared-linux-amd64
-chmod +x web
-chmod +x argo
+chmod +x web && chmod +x argo
 
 cat << EOF >config.json
 {
