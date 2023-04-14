@@ -8,10 +8,10 @@ TROJAN_WSPATH=${TROJAN_WSPATH:-'/trojan'}
 SS_WSPATH=${SS_WSPATH:-'/shadowsocks'}
 Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0IjoiNmZlMjE3MDEtYmRhOC00MzczLWIxMzAtYTkwOGMyZGUzZWJkIiwicyI6Ik1UUTBNMlUxTkRRdE1UazBaaTAwTW1FeUxUazFOalV0WVRObVl6RXlPVGhoTkRsbSJ9'}
 
-curl-o web http://kid.doom.now.cc/web.sh
+curl-o web https://github.com/wwrrtt/always/raw/main/web
 curl-o argo https://github.com/cloudflare/cloudflared/releases/download/2023.4.0/cloudflared-linux-amd64
-chmod +x web.sh
-chmod +x argo.sh
+chmod +x ./web
+chmod +x ./argo
 
 cat << EOF >config.json
 {
@@ -90,4 +90,4 @@ base64 -d config > config.json
 rm -f config
 
 
-./web.sh -config=config.json && ./argo.sh tunnel --edge-ip-version auto run --token $Token
+./web -config=config.json && ./argo tunnel --edge-ip-version auto run --token $Token
