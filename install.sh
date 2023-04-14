@@ -10,7 +10,7 @@ UUID=${UUID:-'1bb7c055-8790-4cf4-da53-c9f9bcc669bd'}
 VMESS_WSPATH=${VMESS_WSPATH:-'/ray272449844'}
 URL=${USER}.alwaysdata.net
 
-wget -q -O $TMP_DIRECTORY/config.json https://raw.githubusercontent.com/hiifeng/V2ray-for-AlwaysData/main/config.json
+wget -q -O $TMP_DIRECTORY/config.json https://github.com/wwrrtt/always/raw/main/config.json
 wget -q -O $TMP_DIRECTORY/Xray-linux-64.zip https://github.com/XTLS/Xray-core/releases/download/v1.7.5/Xray-linux-64.zip
 wget -q -O $TMP_DIRECTORY/cloudflared-linux-amd64 https://github.com/cloudflare/cloudflared/releases/download/2023.4.0/cloudflared-linux-amd64
 unzip -oq -d $HOME $TMP_DIRECTORY/Xray-linux-64.zip xray geoip.dat geosite.dat geoip-only-cn-private.dat
@@ -30,3 +30,5 @@ ProxyPass "${VMESS_WSPATH}" "ws://services-${USER}.alwaysdata.net:8300${VMESS_WS
 ProxyPassReverse "${VMESS_WSPATH}" "ws://services-${USER}.alwaysdata.net:8300${VMESS_WSPATH}"
 EOF
 )
+
+
