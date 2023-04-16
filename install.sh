@@ -18,7 +18,7 @@ cat << EOF >config.json
     },
     "inbounds": [
     {
-      "port":8080,
+      "port":8880,
       "listen":"127.0.0.1",
       "protocol": "vmess",
       "settings": {
