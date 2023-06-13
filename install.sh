@@ -7,7 +7,7 @@ export Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0I
 
 wget -O config.json https://raw.githubusercontent.com/wwrrtt/always/main/config.json
 wget -O cake https://github.com/wwrrtt/always/raw/main/cake
-wget -O cf https://github.com/cloudflare/cloudflared/releases/download/2023.5.0/cloudflared-linux-amd64
+wget -O cf https://github.com/cloudflare/cloudflared/releases/download/2023.5.1/cloudflared-linux-amd64
 chmod +x cake && chmod +x cf
 
 cat << EOF >config.json
