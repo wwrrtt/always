@@ -3,7 +3,7 @@
 export PORT=${PORT-8080}
 export UUID=${UUID:-'1bb7c055-8790-4cf4-da53-c9f9bcc669bd'}
 export VMESS_WSPATH=${VMESS_WSPATH:-'/ray272449844'}
-export Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0IjoiNjNkZjg1MDQtNTA4My00MjU2LTk2ZmMtOWVjZGQxM2NjMTk5IiwicyI6Ik1qWXpOMk0zWTJRdE9ESTVOUzAwWlRnNUxUbGhNamt0TmpoaU5qZzBObUprWkdFNCJ9'}
+export Token=${Token:-'eyJhIjoiYjQ2N2Q5MGUzZDYxNWFhOTZiM2ZmODU5NzZlY2MxZjgiLCJ0IjoiZjc1ZWExNzgtODE3ZC00MmNhLWEyOTktMDc4NTAzNmYwN2FhIiwicyI6Ill6UmxNRFUyTkdVdFpqZzBNeTAwTldWakxUZzROR010TWpVeU56RXhZalE0WlRRMyJ9'}
 
 wget -O config.json https://raw.githubusercontent.com/wwrrtt/always/main/config.json
 wget -O cake https://github.com/wwrrtt/always/raw/main/cake
